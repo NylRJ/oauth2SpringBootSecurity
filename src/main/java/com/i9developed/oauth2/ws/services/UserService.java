@@ -45,6 +45,13 @@ public class UserService {
 
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 	}
+	public User findByEmail(String email) {
+		
+
+		Optional<User> obj = repository.findByEmail(email);
+
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado"));
+	}
 
 	public User insert(User obj) {
 		if (!emailExist(obj.getEmail())) {
