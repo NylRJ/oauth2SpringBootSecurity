@@ -1,14 +1,21 @@
 package com.i9developed.oauth2.ws.services;
 
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.i9developed.oauth2.ws.domain.User;
+import com.i9developed.oauth2.ws.domain.VerificationToken;
 import com.i9developed.oauth2.ws.dto.UserDTO;
+import com.i9developed.oauth2.ws.repositories.RoleRepository;
 import com.i9developed.oauth2.ws.repositories.UserRepository;
+import com.i9developed.oauth2.ws.repositories.VerificationTokenRepository;
+import com.i9developed.oauth2.ws.services.exception.ObjectAlreadyExistException2;
 import com.i9developed.oauth2.ws.services.exception.ObjectNotFoundException;
 
 @Service
@@ -16,6 +23,16 @@ public class UserService {
 
 	@Autowired
 	private UserRepository repository;
+	
+
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
+	private VerificationTokenRepository verificationTokenRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	public List<User> findAll() {
 
@@ -30,8 +47,13 @@ public class UserService {
 	}
 
 	public User insert(User obj) {
-
-		return repository.insert(obj);
+		if (!emailExist(obj.getEmail())) {
+			obj.setPassword(passwordEncoder.encode(obj.getPassword()));
+			return repository.insert(obj);
+		}else {
+			throw new ObjectAlreadyExistException2("Já existe uma conta com esse endereço de email");
+		}
+		
 	}
 
 	public void delete(String id) {
@@ -65,7 +87,62 @@ public class UserService {
 
 	public User fromDTO(UserDTO userDTO) {
 
-		return new User(userDTO.getId(), userDTO.getFirtName(),userDTO.getLastName(), userDTO.getEmail());
+		return new User(userDTO.getId(), userDTO.getFirtName(), userDTO.getLastName(), userDTO.getEmail());
 
 	}
+
+	public User registerUser(User obj) {
+
+		if (!emailExist(obj.getEmail())) {
+			
+			obj.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER").get()));
+			obj.setPassword(passwordEncoder.encode(obj.getPassword()));
+			return repository.insert(obj);
+		} else {
+			throw new ObjectAlreadyExistException2("Já existe uma conta com esse endereço de email"+ obj.getEmail());
+		}
+
+	}
+
+	public Boolean emailExist(final String email) {
+
+		Optional<User> user = repository.findByEmail(email);
+		if (user.isPresent()) {
+
+			return true;
+		}
+		return false;
+	}
+	
+	
+	//verificationTokenRepository
+	
+	
+	 public void createVerificationTokenForUser(final User user,final  String token){
+		 
+		 final VerificationToken vToken = new VerificationToken(token,user);
+		 
+		 verificationTokenRepository.save(vToken);
+		  
+		 
+	 }
+	 
+	 public String validateVerificationToken(String token) {
+		 final Optional<VerificationToken> vToken = verificationTokenRepository.findByToken(token);
+		 
+		 if(!vToken.isPresent()) {
+			 
+			 return "invalidToken";
+		 }
+		 final User user = vToken.get().getUser();
+		 final Calendar cal = Calendar.getInstance();
+		 if((vToken.get().getExpiryDate().getTime() - cal.getTime().getTime() <= 0)) {
+			 return "expired";
+		 }
+		 
+		 user.setEnable(true);
+		 repository.save(user);
+		return null;
+		 
+	 }
 }
