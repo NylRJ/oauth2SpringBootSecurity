@@ -14,7 +14,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	
 	@Override 
 	public void configure(ResourceServerSecurityConfigurer resources) {
-		resources.resourceId(this.RESOURCE_ID);
+		resources.resourceId(ResourceServerConfiguration.RESOURCE_ID);
 	}
 	@Override 
 	public void configure(HttpSecurity http) throws Exception {

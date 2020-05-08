@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 
-@Document(collection ="rules")
+@Document(collection ="roles")
 public class Role implements Serializable, GrantedAuthority {
 
 	private static final long serialVersionUID = 1L;

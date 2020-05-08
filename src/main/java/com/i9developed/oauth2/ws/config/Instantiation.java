@@ -14,7 +14,7 @@ import com.i9developed.oauth2.ws.repositories.RoleRepository;
 import com.i9developed.oauth2.ws.repositories.UserRepository;
 
 @Configuration
-@Profile("dev")
+@Profile("dev2")
 public class Instantiation implements CommandLineRunner  {
 
 	@Autowired
