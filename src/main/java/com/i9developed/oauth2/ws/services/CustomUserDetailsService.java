@@ -1,5 +1,10 @@
 package com.i9developed.oauth2.ws.services;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,12 +16,7 @@ import org.springframework.stereotype.Service;
 import com.i9developed.oauth2.ws.domain.Role;
 import com.i9developed.oauth2.ws.domain.User;
 import com.i9developed.oauth2.ws.repositories.UserRepository;
-import com.i9developed.oauth2.ws.services.exception.ObjectNotFoundException;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import com.i9developed.oauth2.ws.services.exception.ObjectNotEnabledException;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (!user.isPresent()) {
             throw new UsernameNotFoundException(String.format("UserNotExist"));
         } else if (!user.get().getEnable()) {
-            throw new ObjectNotFoundException(String.format("UserNotEnabled"));
+            throw new ObjectNotEnabledException(String.format("UserNotEnabled"));
         }
         return new UserRepositoryUserDetails(user.get());
     }

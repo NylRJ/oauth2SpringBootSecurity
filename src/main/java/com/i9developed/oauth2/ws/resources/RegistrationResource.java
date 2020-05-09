@@ -16,13 +16,14 @@ import com.i9developed.oauth2.ws.resources.util.GenericResponse;
 import com.i9developed.oauth2.ws.services.UserService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/public")
+
 public class RegistrationResource {
 
 	@Autowired
 	private UserService service;
 
-	@PostMapping("/public/registration/users")
+	@PostMapping("/registration/users")
 	public ResponseEntity<Void> registerUser(@RequestBody UserDTO userDTO) {
 
 		User obj = service.fromDTO(userDTO);
@@ -33,7 +34,7 @@ public class RegistrationResource {
 
 	}
 
-	@GetMapping("/public/regitrationConfirm/users")
+	@GetMapping("/regitrationConfirm/users")
 	public ResponseEntity<GenericResponse> confirmRegistrationUser(@RequestParam("token") String token) {
 		final Object result = service.validateVerificationToken(token);
 
@@ -47,7 +48,7 @@ public class RegistrationResource {
 	}
 
 	@GetMapping(value = "/resendRegistrationToken/users")
-	public ResponseEntity<Void> resendRegistrationToken(@RequestParam("token") String email) {
+	public ResponseEntity<Void> resendRegistrationToken(@RequestParam("email") String email) {
 		this.service.generateNewVerificationToken(email);
 		return ResponseEntity.noContent().build();
 	}

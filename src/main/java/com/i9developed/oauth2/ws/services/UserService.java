@@ -17,7 +17,7 @@ import com.i9developed.oauth2.ws.repositories.RoleRepository;
 import com.i9developed.oauth2.ws.repositories.UserRepository;
 import com.i9developed.oauth2.ws.repositories.VerificationTokenRepository;
 import com.i9developed.oauth2.ws.services.email.EmailService;
-import com.i9developed.oauth2.ws.services.exception.ObjectAlreadyExistException2;
+import com.i9developed.oauth2.ws.services.exception.ObjectAlreadyExistException;
 import com.i9developed.oauth2.ws.services.exception.ObjectNotFoundException;
 
 @Service
@@ -63,7 +63,7 @@ public class UserService {
 			obj.setPassword(passwordEncoder.encode(obj.getPassword()));
 			return repository.insert(obj);
 		}else {
-			throw new ObjectAlreadyExistException2("Já existe uma conta com esse endereço de email");
+			throw new ObjectAlreadyExistException("Já existe uma conta com esse endereço de email");
 		}
 		
 	}
@@ -113,7 +113,7 @@ public class UserService {
 			emailService.sendConfirmationHtmlEmail(obj, null);
 			return obj;
 		} else {
-			throw new ObjectAlreadyExistException2("Já existe uma conta com esse endereço de email"+ obj.getEmail());
+			throw new ObjectAlreadyExistException("Já existe uma conta com esse endereço de email"+ obj.getEmail());
 		}
 
 	}
