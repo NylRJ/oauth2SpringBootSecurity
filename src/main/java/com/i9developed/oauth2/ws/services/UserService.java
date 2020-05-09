@@ -15,6 +15,7 @@ import com.i9developed.oauth2.ws.dto.UserDTO;
 import com.i9developed.oauth2.ws.repositories.RoleRepository;
 import com.i9developed.oauth2.ws.repositories.UserRepository;
 import com.i9developed.oauth2.ws.repositories.VerificationTokenRepository;
+import com.i9developed.oauth2.ws.services.email.EmailService;
 import com.i9developed.oauth2.ws.services.exception.ObjectAlreadyExistException2;
 import com.i9developed.oauth2.ws.services.exception.ObjectNotFoundException;
 
@@ -33,6 +34,8 @@ public class UserService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired 
+	private EmailService emailService;
 
 	public List<User> findAll() {
 
