@@ -17,7 +17,7 @@ public class User implements Serializable {
 	
 	@Id
 	private String id;
-	private String firtName;
+	private String firstName;
 	private String lastName;
 	private String email;
 	private String password;
@@ -29,9 +29,9 @@ public class User implements Serializable {
 	public User() {
 	}
 	
-	public User(String firtName, String lastName, String email) {
+	public User(String firstName, String lastName, String email) {
 		this();
-		this.firtName = firtName;
+		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 	}
@@ -39,7 +39,7 @@ public class User implements Serializable {
 	public User(String id,String firtName, String lastName, String email) {
 		this();
 		this.id = id;
-		this.firtName = firtName;
+		this.firstName = firtName;
 		this.lastName = lastName;
 		this.email = email;
 	}
@@ -52,7 +52,7 @@ public class User implements Serializable {
 	public User(User user) {
 		super();
 		this.id = user.getId();
-		this.firtName = user.getFirtName();
+		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();
 		this.email = user.getEmail();
 		this.password = user.getPassword();
@@ -65,7 +65,7 @@ public class User implements Serializable {
 	
 	public User(UserDTO userDTO ) {
 		this.id = userDTO.getId();
-		this.firtName = userDTO.getFirtName();
+		this.firstName = userDTO.getFirstName();
 		this.lastName = userDTO.getLastName();
 		this.email = userDTO.getEmail();
 		this.password = userDTO.getPassword();
@@ -83,12 +83,12 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	public String getFirtName() {
-		return firtName;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirtName(String firtName) {
-		this.firtName = firtName;
+	public void setFirstName(String firtName) {
+		this.firstName = firtName;
 	}
 
 	public String getLastName() {

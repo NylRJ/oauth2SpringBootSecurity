@@ -66,7 +66,7 @@ public class UserResource {
 	@PostMapping(value = "/users")
 	public ResponseEntity<User> create(@RequestBody UserDTO objDTO) {
 		User obj = service.fromDTO(objDTO);
-		obj = service.insert(obj);
+		obj = service.create(obj);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId()).toUri();
@@ -89,7 +89,7 @@ public class UserResource {
 		
 		User objUser = service.fromDTO(obj);
 		objUser.setId(id);
-		objUser = service.update(id, objUser);
+		objUser = service.update(objUser);
 		return ResponseEntity.ok().body(objUser);
 	}
 	

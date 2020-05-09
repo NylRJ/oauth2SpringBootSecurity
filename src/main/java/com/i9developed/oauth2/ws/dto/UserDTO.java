@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.mongodb.core.mapping.DBRef;
-
 import com.i9developed.oauth2.ws.domain.Role;
 import com.i9developed.oauth2.ws.domain.User;
 
@@ -16,7 +14,7 @@ public class UserDTO implements Serializable {
 	
 	
 	private String id;
-	private String firtName;
+	private String firstName;
 	private String lastName;
 	private String email;
 	
@@ -32,7 +30,7 @@ public class UserDTO implements Serializable {
 	public UserDTO(User user) {
 		super();
 		this.id = user.getId();
-		this.firtName = user.getFirtName();
+		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();
 		this.email = user.getEmail();
 		this.enable = user.getEnable();
@@ -48,12 +46,12 @@ public class UserDTO implements Serializable {
 		this.id = id;
 	}
 
-	public String getFirtName() {
-		return firtName;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirtName(String firtName) {
-		this.firtName = firtName;
+	public void setFirstName(String firtName) {
+		this.firstName = firtName;
 	}
 
 	public String getLastName() {
