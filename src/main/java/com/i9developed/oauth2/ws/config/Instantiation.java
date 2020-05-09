@@ -12,6 +12,7 @@ import com.i9developed.oauth2.ws.domain.Role;
 import com.i9developed.oauth2.ws.domain.User;
 import com.i9developed.oauth2.ws.repositories.RoleRepository;
 import com.i9developed.oauth2.ws.repositories.UserRepository;
+import com.i9developed.oauth2.ws.repositories.VerificationTokenRepository;
 
 @Configuration
 @Profile("dev2")
@@ -25,12 +26,15 @@ public class Instantiation implements CommandLineRunner  {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private VerificationTokenRepository verificationTokenRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
 		
 		userRepository.deleteAll();
 		roleRepository.deleteAll();
+		verificationTokenRepository.deleteAll();
 		
 		Role roleAdmin = new Role("ROLE_ADMIN");
 		Role roleUser = new Role("ROLE_USER");

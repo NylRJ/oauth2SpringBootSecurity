@@ -32,18 +32,23 @@ public class RegistrationResource {
 		return ResponseEntity.noContent().build();
 
 	}
-	
+
 	@GetMapping("/public/regitrationConfirm/users")
-	public ResponseEntity<GenericResponse> confirmRegistrationUser(@RequestParam("token") String token){
+	public ResponseEntity<GenericResponse> confirmRegistrationUser(@RequestParam("token") String token) {
 		final Object result = service.validateVerificationToken(token);
-		
+
 		if (result == null) {
-			
+
 			return ResponseEntity.ok().body(new GenericResponse("Success"));
 		}
-		
+
 		return ResponseEntity.status(HttpStatus.SEE_OTHER).body(new GenericResponse(result.toString()));
-		
-		
+
+	}
+
+	@GetMapping(value = "/resendRegistrationToken/users")
+	public ResponseEntity<Void> resendRegistrationToken(@RequestParam("token") String email) {
+		this.service.generateNewVerificationToken(email);
+		return ResponseEntity.noContent().build();
 	}
 }

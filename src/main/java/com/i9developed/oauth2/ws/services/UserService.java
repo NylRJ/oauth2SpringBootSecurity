@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -156,6 +157,18 @@ public class UserService {
 		 user.setEnable(true);
 		 repository.save(user);
 		return null;
+		 
+	 }
+	 
+	 public VerificationToken generateNewVerificationToken(String email) {
+		 User user = this.findByEmail(email);
+		 Optional<VerificationToken> vToken = verificationTokenRepository.findByUser(user);
+		 vToken.get().updateToken(UUID.randomUUID().toString());
+		 
+		 VerificationToken updateToken = verificationTokenRepository.save(vToken.get());
+		 
+		 emailService.sendConfirmationHtmlEmail(user, updateToken);
+		 return updateToken;
 		 
 	 }
 }
