@@ -34,6 +34,7 @@ public class UserService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
 	@Autowired 
 	private EmailService emailService;
 
@@ -107,7 +108,9 @@ public class UserService {
 			
 			obj.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER").get()));
 			obj.setPassword(passwordEncoder.encode(obj.getPassword()));
-			return repository.insert(obj);
+			obj = this.insert(obj);
+			emailService.sendConfirmationHtmlEmail(obj, null);
+			return obj;
 		} else {
 			throw new ObjectAlreadyExistException2("Já existe uma conta com esse endereço de email"+ obj.getEmail());
 		}
