@@ -15,14 +15,18 @@ import com.i9developed.oauth2.ws.dto.UserDTO;
 import com.i9developed.oauth2.ws.resources.util.GenericResponse;
 import com.i9developed.oauth2.ws.services.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(value = "API REST RESGISTRO DE USUARIOS")
 @RestController
 @RequestMapping("/api/public")
-
 public class RegistrationResource {
 
 	@Autowired
 	private UserService service;
-
+	
+	@ApiOperation(value = "Registra Usuario no sistema")
 	@PostMapping("/registration/users")
 	public ResponseEntity<Void> registerUser(@RequestBody UserDTO userDTO) {
 
@@ -33,7 +37,9 @@ public class RegistrationResource {
 		return ResponseEntity.noContent().build();
 
 	}
-
+	
+	
+	@ApiOperation(value = "Confirmacao de Usuario no sistema")
 	@GetMapping("/regitrationConfirm/users")
 	public ResponseEntity<GenericResponse> confirmRegistrationUser(@RequestParam("token") String token) {
 		final Object result = service.validateVerificationToken(token);
@@ -46,7 +52,8 @@ public class RegistrationResource {
 		return ResponseEntity.status(HttpStatus.SEE_OTHER).body(new GenericResponse(result.toString()));
 
 	}
-
+	
+	@ApiOperation(value = "Reenvio Resgistro de Token")
 	@GetMapping(value = "/resendRegistrationToken/users")
 	public ResponseEntity<Void> resendRegistrationToken(@RequestParam("email") String email) {
 		this.service.generateNewVerificationToken(email);

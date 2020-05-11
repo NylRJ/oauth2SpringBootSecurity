@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -27,10 +26,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.i9developed.oauth2.ws.domain.Role;
 import com.i9developed.oauth2.ws.domain.User;
 import com.i9developed.oauth2.ws.dto.UserDTO;
-import com.i9developed.oauth2.ws.services.RoleService;
 import com.i9developed.oauth2.ws.services.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@Api(value = "API REST FUNCINALIDADES DE USUARIOS")
 @RestController
 @RequestMapping("/api")
 public class UserResource {
@@ -41,7 +42,8 @@ public class UserResource {
 	
 	@Autowired
 	private DefaultTokenServices tokenServices;
-
+	
+	@ApiOperation(value = "Retorna uma Lista de Usuarios")
 	@GetMapping("/users")
 	public ResponseEntity<List<UserDTO>> findAll() {
 
@@ -54,7 +56,7 @@ public class UserResource {
 	
 
 	
-
+	@ApiOperation(value = "Retorna Usuario por ID:")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public ResponseEntity<UserDTO> findById(@PathVariable String id) {
 		User obj = service.findById(id);
@@ -62,7 +64,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(new UserDTO(obj));
 	}
 
-
+	@ApiOperation(value = "Cria  um novo Usuario")
 	@PostMapping(value = "/users")
 	public ResponseEntity<User> create(@RequestBody UserDTO objDTO) {
 		User obj = service.fromDTO(objDTO);
@@ -75,6 +77,7 @@ public class UserResource {
 		
 	}
 	
+	@ApiOperation(value = "Exclui um Usuario")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable String id) {
 		
@@ -83,7 +86,7 @@ public class UserResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-
+	@ApiOperation(value = "Atualiza dados do Usuario")
 	@PutMapping(value = "/users/{id}")
 	public ResponseEntity<User> update(@PathVariable String id, @RequestBody UserDTO obj) {
 		
@@ -93,6 +96,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(objUser);
 	}
 	
+	@ApiOperation(value = "Retorna a funcao do Usuario no sistema")
 	@GetMapping(value = "/users/{id}/roles")
 	public ResponseEntity<List<Role>> findRole(@PathVariable String id) {
 		
@@ -100,6 +104,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(obj.getRoles());
 	}
 	
+	@ApiOperation(value = "Retorna o Usuario logado no sistema")
 	@GetMapping(value="/users/main")
 	public ResponseEntity<UserDTO> getUserMain(Principal principal){
 		
@@ -111,7 +116,7 @@ public class UserResource {
 		
 	}
 	
-	
+	@ApiOperation(value = "Faz o logout uma Lista de Usuarios")
 	@GetMapping(value = "/logout")
 	public ResponseEntity<Void> logout(HttpServletRequest request) {
 		
