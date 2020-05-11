@@ -30,6 +30,7 @@ import com.i9developed.oauth2.ws.services.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @Api(value = "API REST FUNCINALIDADES DE USUARIOS")
 @RestController
@@ -58,7 +59,7 @@ public class UserResource {
 	
 	@ApiOperation(value = "Retorna Usuario por ID:")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-	public ResponseEntity<UserDTO> findById(@PathVariable String id) {
+	public ResponseEntity<UserDTO> findById(@ApiParam("ID do Usuario nao pode ser fazio") @PathVariable String id) {
 		User obj = service.findById(id);
 
 		return ResponseEntity.ok().body(new UserDTO(obj));

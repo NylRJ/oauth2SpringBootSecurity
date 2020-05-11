@@ -18,7 +18,7 @@ import com.i9developed.oauth2.ws.services.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-@Api(value = "API REST RESGISTRO DE USUARIOS")
+@Api(value ="Endpoints para criar, retornar, atualizar e deletar usuários.")
 @RestController
 @RequestMapping("/api/public")
 public class RegistrationResource {
