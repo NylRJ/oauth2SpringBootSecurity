@@ -8,7 +8,7 @@ import com.i9developed.oauth2.ws.domain.VerificationToken;
 public interface EmailService {
 	
 	void sendHtmlEmail(MimeMessage msg);
-	void sendConfirmationHtmlEmail(User user, VerificationToken vToken);
+	void sendConfirmationHtmlEmail(User user, VerificationToken vToken, int select);
 	
 	
 

@@ -56,7 +56,28 @@ public class RegistrationResource {
 	@ApiOperation(value = "Reenvio Resgistro de Token")
 	@GetMapping(value = "/resendRegistrationToken/users")
 	public ResponseEntity<Void> resendRegistrationToken(@RequestParam("email") String email) {
-		this.service.generateNewVerificationToken(email);
+		this.service.generateNewVerificationToken(email, 0);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@ApiOperation(value = "Reset do Password Usuario no sistema")
+	@PostMapping("/resetPassword/users")
+	public ResponseEntity<Void> resetPassword(@RequestParam("email") String email) {
+
+		this.service.generateNewVerificationToken(email, 1);
+
+		return ResponseEntity.noContent().build();
+
+	}
+	
+	@ApiOperation(value = "Configuração de senha de usuário")
+	@GetMapping(value = "/changePassword/users")
+	public ResponseEntity<GenericResponse> changePassword(@RequestParam("id") String idUser,@RequestParam("token") String token) {
+		final String result = this.service.validatePasswordResetToken(idUser,token);
+		if (result != null) {
+			 return ResponseEntity.ok().body(new GenericResponse("success"));
+		}
+		
+		return  ResponseEntity.status(HttpStatus.SEE_OTHER).body(new GenericResponse(result.toString()));
 	}
 }

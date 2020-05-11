@@ -48,13 +48,21 @@ public class Instantiation implements CommandLineRunner  {
 		 User joao = new User("João", "Souza", "joao@gmail.com");
 		 User maria2 = new User("Maria", "Teixeira", "maria@gmail.com");
 		 
+		 User moisesj = new User("Moises","Rodrigues de souza Junior","moises.souza@al.infnet.edu.br");
+		 
 		 moises.getRoles().addAll(Arrays.asList(roleAdmin,roleUser));
 		 moises.setPassword(passwordEncoder.encode("123456"));
 		 moises.setEnable(true);
 		 
+		 moisesj.getRoles().addAll(Arrays.asList(roleAdmin,roleUser));
+		 moisesj.setPassword(passwordEncoder.encode("654321"));
+		 moisesj.setEnable(true);
+		 
 		 maria.getRoles().addAll(Arrays.asList(roleAdmin,roleUser));
 		 maria.setPassword(passwordEncoder.encode("123456"));
 		 maria.setEnable(true);
+		 
+		 
 		 
 		 joao.getRoles().addAll(Arrays.asList(roleUser));
 		 joao.setPassword(passwordEncoder.encode("123456"));
@@ -64,7 +72,7 @@ public class Instantiation implements CommandLineRunner  {
 		 maria2.setPassword(passwordEncoder.encode("123456"));
 		 maria2.setEnable(true);
 		 
-		userRepository.saveAll(Arrays.asList(moises,maria,maria2,joao));
+		userRepository.saveAll(Arrays.asList(moises,maria,maria2,joao,moisesj));
 	}
 
 }
