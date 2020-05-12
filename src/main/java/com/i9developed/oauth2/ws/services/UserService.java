@@ -71,6 +71,7 @@ public class UserService {
 			throw new ObjectAlreadyExistException(String.format("Já extiste uma conta com esse endereço de email"));
 		}
 		user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER").get()));
+		user.setEnable(false);
 		user = create(user);
 		this.emailService.sendConfirmationHtmlEmail(user, null, 0);
 		return user;
@@ -119,6 +120,7 @@ public class UserService {
 		}else {
 			final String token = UUID.randomUUID().toString();
 			newToken =new VerificationToken(token,user);
+			
 		}
 		VerificationToken updateVToken = verificationTokenRepository.save(newToken);
 		emailService.sendConfirmationHtmlEmail(user, updateVToken, select);
@@ -127,7 +129,7 @@ public class UserService {
 
 	public String validatePasswordResetToken(String idUser, String token) {
 		Optional<VerificationToken> vToken = verificationTokenRepository.findByToken(token);
-		if (vToken.isPresent() || vToken.get().getUser().getId() != idUser) {
+		if (!vToken.isPresent() || !idUser.equals(vToken.get().getUser().getId())) {
 			
 			return "invalidToken";
 			
@@ -137,6 +139,18 @@ public class UserService {
 		if ((vToken.get().getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
 			return "expiredToken";
 		}
+		
 		return null;
+	}
+
+	public VerificationToken getVerificationTonByToken(String token) {
+		 
+		return verificationTokenRepository.findByToken(token).orElseThrow(() -> new ObjectNotFoundException("Token Não encontrado"));
+	}
+
+	public void changeUserPassword(User user, String password) {
+		user.setPassword(passwordEncoder.encode(password));
+		this.userRepository.save(user);
+		
 	}
 }
